@@ -40,7 +40,7 @@ async function run() {
     const ordersCollection = database.collection("orders");
 
     // Get All Coffee
-    app.get("/all-coffee", async (req, res) => {
+    app.get("/api/all-coffee", async (req, res) => {
       const cursor = await coffeeCollection.find({}).toArray();
       res.send(cursor);
     });
@@ -175,7 +175,7 @@ run().catch(console.dir);
 // module.exports = app;
 
 // Home route
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Hello World!");
 });
 
