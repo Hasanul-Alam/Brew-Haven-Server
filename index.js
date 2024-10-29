@@ -8,7 +8,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.uvq0yvv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -38,11 +38,6 @@ async function run() {
     const cartCollection = database.collection("cart");
     const favouriteCollection = database.collection("favourite");
     const ordersCollection = database.collection("orders");
-
-    // Home route
-    app.get("/", (req, res) => {
-      res.send("Hello World!");
-    });
 
     // Get All Coffee
     app.get("/all-coffee", async (req, res) => {
@@ -83,94 +78,93 @@ async function run() {
     });
 
     // Find cart items from the database
-    app.get("/cart/:email", async(req, res) => {
+    app.get("/cart/:email", async (req, res) => {
       const email = req.params.email;
-      const query = {email: email};
+      const query = { email: email };
       const result = await cartCollection.find(query).toArray();
-      res.send(result)
-    })
+      res.send(result);
+    });
 
     // Update favourite status of coffee
-    app.patch("/all-coffee/:id", async(req, res) => {
+    app.patch("/all-coffee/:id", async (req, res) => {
       const id = req.params.id;
       const updateData = req.body;
       const query = { _id: new ObjectId(id) };
       const updateDoc = {
-        $set: updateData
+        $set: updateData,
       };
       const result = await coffeeCollection.updateOne(query, updateDoc);
       res.send(result);
-      console.log(updateData)
-    })
+      console.log(updateData);
+    });
 
     // Update favourite status of coffee beans
-    app.patch("/all-coffee-bean/:id", async(req, res) => {
+    app.patch("/all-coffee-bean/:id", async (req, res) => {
       const id = req.params.id;
       const updateData = req.body;
       const query = { _id: new ObjectId(id) };
       const updateDoc = {
-        $set: updateData
+        $set: updateData,
       };
       const result = await coffeeBeanCollection.updateOne(query, updateDoc);
       res.send(result);
-      console.log(updateData)
-    })
+      console.log(updateData);
+    });
 
     // Insert data in favourite list
-    app.post("/favourite", async(req, res) => {
+    app.post("/favourite", async (req, res) => {
       const data = req.body;
       const result = await favouriteCollection.insertOne(data);
       res.send(result);
-    })
+    });
 
     // Get data from favourite
-    app.get("/favourite/:email", async(req, res) =>{
+    app.get("/favourite/:email", async (req, res) => {
       const email = req.params.email;
-      console.log(email)
+      console.log(email);
       const query = { email: email };
       const cursor = await favouriteCollection.find(query).toArray();
-      console.log(cursor)
+      console.log(cursor);
       res.send(cursor);
-    })
+    });
 
     // Delete data from favourite
-    app.delete("/favourite/:id", async(req, res) => {
+    app.delete("/favourite/:id", async (req, res) => {
       const id = req.params.id;
       // console.log(id)
       const query = { id: id };
       const data = await favouriteCollection.find(query).toArray();
       console.log(data);
-      if(data.length > 0){
+      if (data.length > 0) {
         const result = await favouriteCollection.deleteOne(query);
-        res.send(result)
+        res.send(result);
       }
-    })
+    });
 
     // Post orders data
-    app.post("/orders", async(req, res) => {
+    app.post("/orders", async (req, res) => {
       const data = req.body;
       const options = { ordered: true };
       const result = await ordersCollection.insertMany(data, options);
       res.send(result);
-    })
+    });
 
     // Get all orders data
-    app.get("/orders/:email", async(req, res) => {
+    app.get("/orders/:email", async (req, res) => {
       const email = req.params.email;
-      const query = {email: email};
+      const query = { email: email };
       const cursor = await ordersCollection.find(query).toArray();
-      res.send(cursor)
-      console.log(email)
-    })
+      res.send(cursor);
+      console.log(email);
+    });
 
     // Delete cart data
-    app.delete("/cart/:email", async(req, res) => {
+    app.delete("/cart/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
       const result = await cartCollection.deleteMany(query);
       res.send(result);
-    })
-
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
@@ -178,9 +172,13 @@ async function run() {
 }
 run().catch(console.dir);
 
-module.exports = app;
+// module.exports = app;
 
+// Home route
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
-// app.listen(PORT, () => {
-//   console.log(`Example app listening on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`);
+});
