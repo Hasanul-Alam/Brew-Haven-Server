@@ -39,6 +39,11 @@ async function run() {
     const favouriteCollection = database.collection("favourite");
     const ordersCollection = database.collection("orders");
 
+    // Home route
+    app.get("/", (req, res) => {
+      res.send("Hello World!");
+    });
+
     // Get All Coffee
     app.get("/all-coffee", async (req, res) => {
       const cursor = await coffeeCollection.find({}).toArray();
@@ -173,9 +178,7 @@ async function run() {
 }
 run().catch(console.dir);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
