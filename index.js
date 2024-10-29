@@ -40,31 +40,31 @@ async function run() {
     const ordersCollection = database.collection("orders");
 
     // Get All Coffee
-    app.get("/api/all-coffee", async (req, res) => {
+    app.get("/all-coffee", async (req, res) => {
       const cursor = await coffeeCollection.find({}).toArray();
       res.send(cursor);
     });
     // Get All Coffee-Beans
-    app.get("/api/all-coffee-bean", async (req, res) => {
+    app.get("/all-coffee-bean", async (req, res) => {
       const cursor = await coffeeBeanCollection.find({}).toArray();
       res.send(cursor);
     });
     // Get a single data from all coffee
-    app.get("/api/all-coffee/:id", async (req, res) => {
+    app.get("/all-coffee/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await coffeeCollection.findOne(query);
       res.send(result);
     });
     // Get a single data from all coffee bean
-    app.get("/api/all-coffee-bean/:id", async (req, res) => {
+    app.get("/all-coffee-bean/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await coffeeBeanCollection.findOne(query);
       res.send(result);
     });
     // Add a single product to cart with email
-    app.post("/api/cart", async (req, res) => {
+    app.post("/cart", async (req, res) => {
       try {
         const data = req.body;
         const result = await cartCollection.insertOne(data);
@@ -78,7 +78,7 @@ async function run() {
     });
 
     // Find cart items from the database
-    app.get("/api/cart/:email", async (req, res) => {
+    app.get("/cart/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
       const result = await cartCollection.find(query).toArray();
@@ -86,7 +86,7 @@ async function run() {
     });
 
     // Update favourite status of coffee
-    app.patch("/api/all-coffee/:id", async (req, res) => {
+    app.patch("/all-coffee/:id", async (req, res) => {
       const id = req.params.id;
       const updateData = req.body;
       const query = { _id: new ObjectId(id) };
@@ -99,7 +99,7 @@ async function run() {
     });
 
     // Update favourite status of coffee beans
-    app.patch("/api/all-coffee-bean/:id", async (req, res) => {
+    app.patch("/all-coffee-bean/:id", async (req, res) => {
       const id = req.params.id;
       const updateData = req.body;
       const query = { _id: new ObjectId(id) };
@@ -112,14 +112,14 @@ async function run() {
     });
 
     // Insert data in favourite list
-    app.post("/api/favourite", async (req, res) => {
+    app.post("/favourite", async (req, res) => {
       const data = req.body;
       const result = await favouriteCollection.insertOne(data);
       res.send(result);
     });
 
     // Get data from favourite
-    app.get("/api/favourite/:email", async (req, res) => {
+    app.get("/favourite/:email", async (req, res) => {
       const email = req.params.email;
       console.log(email);
       const query = { email: email };
@@ -129,7 +129,7 @@ async function run() {
     });
 
     // Delete data from favourite
-    app.delete("/api/favourite/:id", async (req, res) => {
+    app.delete("/favourite/:id", async (req, res) => {
       const id = req.params.id;
       // console.log(id)
       const query = { id: id };
@@ -142,7 +142,7 @@ async function run() {
     });
 
     // Post orders data
-    app.post("/api/orders", async (req, res) => {
+    app.post("/orders", async (req, res) => {
       const data = req.body;
       const options = { ordered: true };
       const result = await ordersCollection.insertMany(data, options);
@@ -150,7 +150,7 @@ async function run() {
     });
 
     // Get all orders data
-    app.get("/api/orders/:email", async (req, res) => {
+    app.get("/orders/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
       const cursor = await ordersCollection.find(query).toArray();
@@ -159,7 +159,7 @@ async function run() {
     });
 
     // Delete cart data
-    app.delete("/api/cart/:email", async (req, res) => {
+    app.delete("/cart/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
       const result = await cartCollection.deleteMany(query);
@@ -175,7 +175,7 @@ run().catch(console.dir);
 // module.exports = app;
 
 // Home route
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
