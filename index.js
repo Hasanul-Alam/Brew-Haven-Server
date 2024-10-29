@@ -175,7 +175,7 @@ run().catch(console.dir);
 // module.exports = app;
 
 // Home route
-app.get("/api/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Hello World!");
 });
 
